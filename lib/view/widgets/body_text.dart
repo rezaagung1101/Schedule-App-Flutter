@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class TitleText extends StatelessWidget {
-  const TitleText({super.key, required this.text, required this.size, required this.color});
+class BodyText extends StatelessWidget {
+  const BodyText({super.key, required this.text, required this.size, required this.color});
 
   final String text;
   final double size;
@@ -13,7 +13,7 @@ class TitleText extends StatelessWidget {
       text,
       style: TextStyle(
         fontFamily: 'Goli',
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w400,
         color: color,
         fontSize: size,
       ),
