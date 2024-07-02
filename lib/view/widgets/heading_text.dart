@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HeadingText extends StatelessWidget {
-  const HeadingText(this.text, this.size, this.color, {super.key});
+  const HeadingText({super.key, required this.text, required this.size, required this.color});
   final String text;
   final double size;
   final Color color;

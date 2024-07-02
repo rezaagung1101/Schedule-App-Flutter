@@ -27,8 +27,8 @@ class _MainScreenState extends State<MainScreen> {
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Add'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'List'),
+          BottomNavigationBarItem(icon: Icon(Icons.add_circle_rounded), label: 'Add'),
+          BottomNavigationBarItem(icon: Icon(Icons.list_alt_outlined), label: 'List'),
         ],
       ),
     );
