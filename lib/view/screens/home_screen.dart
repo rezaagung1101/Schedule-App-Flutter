@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_app_flutter/view/widgets/day_card_item.dart';
 import 'package:schedule_app_flutter/view/widgets/schedule_card_item.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -7,9 +8,13 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ScheduleCardItem(onTap: (){}, scheduleName: 'Apa aja', startTime: '10.00am',)
-      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            ScheduleCardItem(onTap: (){}, scheduleName: 'Apa aja', startTime: '10.00am',),
+            DayCardItem(onTap: (){}, day: 6)
+          ],
+        )
     );
   }
 }
