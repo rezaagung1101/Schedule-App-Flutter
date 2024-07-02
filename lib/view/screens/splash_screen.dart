@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:schedule_app_flutter/view/screens/main_screen.dart';
 import 'package:schedule_app_flutter/view/widgets/title_text.dart';
 
 import '../../utils/constants.dart';
@@ -35,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   void _navigateToHome() {
     Navigator.of(context).pushReplacement(PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) =>
-      const HomeScreen(),
+      const MainScreen(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(1.0, 0.0);
         const end = Offset.zero;
