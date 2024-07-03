@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:schedule_app_flutter/view/widgets/body_text.dart';
+import 'package:schedule_app_flutter/view/widgets/title_text.dart';
+
 class Helper {
   String getDayName(int day) {
     switch (day) {
@@ -32,5 +36,38 @@ class Helper {
       default:
         return '${dayIndex}th';
     }
+  }
+
+  void showSnackBar(BuildContext context, String message){
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+          content: BodyText(text: message, size: 14, color: Colors.white)),
+    );
+  }
+
+  Future<bool?> showConfirmationDialog(BuildContext context, String title, String content) {
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: TitleText(text: title, size: 20, color: Colors.black87),
+          content: Text(content, style: const TextStyle(fontFamily: 'Goli')),
+          actions: <Widget>[
+            TextButton(
+              child: const TitleText(text: 'Cancel', size: 14, color: Colors.red),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            TextButton(
+              child: const TitleText(text: 'Confirm', size: 14, color: Colors.blue),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
