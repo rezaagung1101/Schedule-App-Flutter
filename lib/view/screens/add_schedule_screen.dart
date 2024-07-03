@@ -5,6 +5,7 @@ import 'package:schedule_app_flutter/view/widgets/button_section.dart';
 import 'package:schedule_app_flutter/view/widgets/button_time_picker.dart';
 
 import '../../utils/constants.dart';
+import '../../utils/helper.dart';
 
 class AddScheduleScreen extends StatefulWidget {
   const AddScheduleScreen({super.key});
@@ -22,73 +23,76 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
   int _selectedDayIndex = 0;
   TimeOfDay? selectedStartTime;
   TimeOfDay? selectedEndTime;
+  Helper helper = Helper();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-      child: Padding(
-          padding: const EdgeInsets.fromLTRB(12, 24, 12, 12),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                const BodyText(
-                    text: 'Add New Schedule', size: 22, color: Colors.black87),
-                const SizedBox(height: 16.0),
-                buildDaySpinner(),
-                const SizedBox(height: 16.0),
-                TextFormField(
-                  controller: _scheduleNameController,
-                  decoration: InputDecoration(
-                      labelText: 'Schedule Name',
-                      labelStyle: const TextStyle(fontFamily: 'Goli'),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20))),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Schedule name can't be empty!";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16.0),
-                TextFormField(
-                  controller: _noteController,
-                  decoration: InputDecoration(
-                      labelText: 'Add note here',
-                      labelStyle: const TextStyle(fontFamily: 'Goli'),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20))),
-                  maxLines: 5,
-                ),
-                const SizedBox(height: 16.0),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ButtonTimePicker(
-                        onTap: _selectStartTime,
-                        text: 'Start Time',
-                        selectedTime: selectedStartTime,
-                        icon: Icons.play_circle,
+      child: SingleChildScrollView(
+        child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 24, 12, 12),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  const BodyText(
+                      text: 'Add New Schedule', size: 22, color: Colors.black87),
+                  const SizedBox(height: 16.0),
+                  buildDaySpinner(),
+                  const SizedBox(height: 16.0),
+                  TextFormField(
+                    controller: _scheduleNameController,
+                    decoration: InputDecoration(
+                        labelText: 'Schedule Name',
+                        labelStyle: const TextStyle(fontFamily: 'Goli'),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20))),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Schedule name can't be empty!";
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16.0),
+                  TextFormField(
+                    controller: _noteController,
+                    decoration: InputDecoration(
+                        labelText: 'Add note here',
+                        labelStyle: const TextStyle(fontFamily: 'Goli'),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20))),
+                    maxLines: 5,
+                  ),
+                  const SizedBox(height: 16.0),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ButtonTimePicker(
+                          onTap: _selectStartTime,
+                          text: 'Start Time',
+                          selectedTime: selectedStartTime,
+                          icon: Icons.play_circle,
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: ButtonTimePicker(
-                        onTap: _selectEndTime,
-                        text: 'End Time',
-                        selectedTime: selectedEndTime,
-                        icon: Icons.stop_circle,
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 16.0),
-                ButtonSection(onTap: (){}, text: 'Save', mainColor: Colors.blue)
-              ],
-            ),
-          )),
+                      Expanded(
+                        child: ButtonTimePicker(
+                          onTap: _selectEndTime,
+                          text: 'End Time',
+                          selectedTime: selectedEndTime,
+                          icon: Icons.stop_circle,
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 16.0),
+                  ButtonSection(onTap: _confirmAddSchedule, text: 'Save', mainColor: Colors.blue)
+                ],
+              ),
+            )),
+      ),
     ));
   }
 
@@ -117,6 +121,32 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
         selectedEndTime = pickedTime;
       });
     }
+  }
+
+  void _confirmAddSchedule() async{
+    if (_formKey.currentState!.validate()) {
+      if (selectedStartTime != null && selectedEndTime != null) {
+        // if (await helper.internetAvailability()) {
+          bool? result = await helper.showConfirmationDialog(
+            context,
+            'Confirm Add Task',
+            'Are you sure you want to add this task?',
+          );
+          if (result == true) {
+            _addSchedule();
+          }
+        // } else {
+        //   helper.showSnackBar(
+        //       context, 'No internet connection, task can\'t be added');
+        // }
+      } else {
+        helper.showSnackBar(context, 'Start & End Time Required!');
+      }
+    }
+  }
+
+  void _addSchedule() async{
+    helper.showSnackBar(context, 'add schedule berhasil!');
   }
 
   Widget buildDaySpinner() {
@@ -192,3 +222,4 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
     );
   }
 }
+
