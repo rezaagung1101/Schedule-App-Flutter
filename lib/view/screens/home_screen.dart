@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
         body: SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: Center(
+        // child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -56,7 +56,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 )
             ],
-          ),
+          // ),
         ),
       ),
     ));
