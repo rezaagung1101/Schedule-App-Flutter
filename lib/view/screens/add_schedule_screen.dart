@@ -4,6 +4,7 @@ import 'package:schedule_app_flutter/view/widgets/body_text.dart';
 import 'package:schedule_app_flutter/view/widgets/button_section.dart';
 import 'package:schedule_app_flutter/view/widgets/button_time_picker.dart';
 
+import '../../model/data/schedule.dart';
 import '../../utils/constants.dart';
 import '../../utils/helper.dart';
 
@@ -146,7 +147,18 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
   }
 
   void _addSchedule() async{
-    helper.showSnackBar(context, 'add schedule berhasil!');
+    // helper.showSnackBar(context, 'add schedule berhasil!');
+    final scheduleName = _scheduleNameController.text;
+    final note = _noteController.text;
+    final startTime = helper.timeOfDayToString(selectedStartTime!);
+    final endTime = helper.timeOfDayToString(selectedEndTime!);
+    final schedule = Schedule(
+      scheduleName: scheduleName,
+      day: _selectedDayIndex,
+      startTime: startTime,
+      endTime: endTime,
+      note: note.toString(),
+    );
   }
 
   Widget buildDaySpinner() {
