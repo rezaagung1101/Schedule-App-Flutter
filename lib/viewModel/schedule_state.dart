@@ -1,6 +1,4 @@
-
 import 'package:equatable/equatable.dart';
-
 import '../model/data/schedule.dart';
 
 abstract class ScheduleState extends Equatable{

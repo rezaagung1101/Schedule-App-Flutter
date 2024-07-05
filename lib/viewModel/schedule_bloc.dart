@@ -1,11 +1,6 @@
-
-
-import 'dart:async';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_app_flutter/viewModel/schedule_event.dart';
 import 'package:schedule_app_flutter/viewModel/schedule_state.dart';
-
 import '../model/data/schedule.dart';
 
 class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState>{
@@ -28,7 +23,8 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState>{
   void _onAddSchedule(AddSchedule event, Emitter<ScheduleState> emit) {
     if (state is ScheduleLoaded){
       final currentState = state as ScheduleLoaded;
-      final updateSchedules = List<Schedule>.from(currentState.schedules);
+      final updateSchedules = List<Schedule>.from(currentState.schedules)
+        ..add(event.schedule);
       emit(ScheduleLoaded(updateSchedules));
     }
   }
