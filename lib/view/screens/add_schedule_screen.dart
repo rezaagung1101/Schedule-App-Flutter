@@ -127,7 +127,6 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
   void _confirmAddSchedule() async{
     if (_formKey.currentState!.validate()) {
       if (selectedStartTime != null && selectedEndTime != null) {
-        // if (await helper.internetAvailability()) {
           bool? result = await helper.showConfirmationDialog(
             context,
             'Confirm Add Task',
@@ -136,10 +135,6 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
           if (result == true) {
             _addSchedule();
           }
-        // } else {
-        //   helper.showSnackBar(
-        //       context, 'No internet connection, task can\'t be added');
-        // }
       } else {
         helper.showSnackBar(context, 'Start & End Time Required!');
       }
@@ -147,7 +142,6 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
   }
 
   void _addSchedule() async{
-    // helper.showSnackBar(context, 'add schedule berhasil!');
     final scheduleName = _scheduleNameController.text;
     final note = _noteController.text;
     final startTime = helper.timeOfDayToString(selectedStartTime!);
@@ -159,6 +153,8 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       endTime: endTime,
       note: note.toString(),
     );
+
+    //add schedule not yet implemented
   }
 
   Widget buildDaySpinner() {

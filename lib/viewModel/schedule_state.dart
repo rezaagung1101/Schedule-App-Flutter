@@ -1,31 +1,48 @@
 import 'package:equatable/equatable.dart';
 import '../model/data/schedule.dart';
+abstract class ScheduleState {}
 
-abstract class ScheduleState extends Equatable{
-  const ScheduleState();
+class ScheduleInitial extends ScheduleState {}
 
-  @override
-  List<Object> get props => [];
-}
+class SchedulesLoading extends ScheduleState {}
 
-class ScheduleInitial extends ScheduleState{}
-
-class ScheduleLoading extends ScheduleState{}
-
-class ScheduleLoaded extends ScheduleState{
+class SchedulesLoaded extends ScheduleState {
   final List<Schedule> schedules;
 
-  const ScheduleLoaded(this.schedules);
-
-  @override
-  List<Object> get props => [];
+  SchedulesLoaded(this.schedules);
 }
 
-class ScheduleError extends ScheduleState{
-  final String message;
+class ScheduleError extends ScheduleState {
+  final String error;
 
-  const ScheduleError(this.message);
-
-  @override
-  List<Object> get props => [];
+  ScheduleError(this.error);
 }
+
+// abstract class ScheduleState extends Equatable{
+//   const ScheduleState();
+//
+//   @override
+//   List<Object> get props => [];
+// }
+//
+// class ScheduleInitial extends ScheduleState{}
+//
+// class ScheduleLoading extends ScheduleState{}
+//
+// class ScheduleLoaded extends ScheduleState{
+//   final List<Schedule> schedules;
+//
+//   const ScheduleLoaded(this.schedules);
+//
+//   @override
+//   List<Object> get props => [];
+// }
+//
+// class ScheduleError extends ScheduleState{
+//   final String message;
+//
+//   const ScheduleError(this.message);
+//
+//   @override
+//   List<Object> get props => [];
+// }

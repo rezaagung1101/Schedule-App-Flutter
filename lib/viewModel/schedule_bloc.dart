@@ -1,31 +1,60 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_app_flutter/viewModel/schedule_event.dart';
 import 'package:schedule_app_flutter/viewModel/schedule_state.dart';
-import '../model/data/schedule.dart';
+import '../model/repository/schedule_repository.dart';
 
-class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState>{
-  ScheduleBloc(): super(ScheduleInitial()){
-    on<LoadSchedules>(_onLoadSchedules);
-    on<AddSchedule>(_onAddSchedule);
-  }
+class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
+  final ScheduleRepository repository;
 
-  void _onLoadSchedules(LoadSchedules event, Emitter<ScheduleState> emit) {
-    emit(ScheduleLoading());
-    try{
-      //fetch schedule from db
-      final schedules = <Schedule>[];
-      emit(ScheduleLoaded(schedules));
-    } catch (e){
-      emit(ScheduleError(e.toString()));
+  ScheduleBloc(this.repository) : super(ScheduleInitial());
+
+  @override
+  Stream<ScheduleState> mapEventToState(ScheduleEvent event) async* {
+    if (event is LoadSchedules) {
+      yield* _mapLoadSchedulesToState();
+    } else if (event is AddSchedule) {
+      yield* _mapAddScheduleToState(event);
+    } else if (event is UpdateSchedule) {
+      yield* _mapUpdateScheduleToState(event);
+    } else if (event is DeleteSchedule) {
+      yield* _mapDeleteScheduleToState(event);
     }
   }
 
-  void _onAddSchedule(AddSchedule event, Emitter<ScheduleState> emit) {
-    if (state is ScheduleLoaded){
-      final currentState = state as ScheduleLoaded;
-      final updateSchedules = List<Schedule>.from(currentState.schedules)
-        ..add(event.schedule);
-      emit(ScheduleLoaded(updateSchedules));
+  Stream<ScheduleState> _mapLoadSchedulesToState() async* {
+    yield SchedulesLoading();
+    try {
+      final schedules = await repository.getAllSchedules();
+      yield SchedulesLoaded(schedules);
+    } catch (e) {
+      yield ScheduleError('Failed to load schedules: $e');
+    }
+  }
+
+  Stream<ScheduleState> _mapAddScheduleToState(AddSchedule event) async* {
+    try {
+      await repository.insertSchedule(event.schedule);
+      yield* _mapLoadSchedulesToState(); // Reload schedules after addition
+    } catch (e) {
+      yield ScheduleError('Failed to add schedule: $e');
+    }
+  }
+
+  Stream<ScheduleState> _mapUpdateScheduleToState(UpdateSchedule event) async* {
+    try {
+      await repository.updateSchedule(event.schedule);
+      yield* _mapLoadSchedulesToState(); // Reload schedules after update
+    } catch (e) {
+      yield ScheduleError('Failed to update schedule: $e');
+    }
+  }
+
+  Stream<ScheduleState> _mapDeleteScheduleToState(DeleteSchedule event) async* {
+    try {
+      await repository.deleteSchedule(event.id);
+      yield* _mapLoadSchedulesToState(); // Reload schedules after deletion
+    } catch (e) {
+      yield ScheduleError('Failed to delete schedule: $e');
     }
   }
 }
