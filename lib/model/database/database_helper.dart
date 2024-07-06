@@ -19,55 +19,88 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    String path = join(await getDatabasesPath(), 'schedules.db');
-    return await openDatabase(
-      path,
-      version: 1,
-      onCreate: _onCreate,
-    );
+    try {
+      String path = join(await getDatabasesPath(), 'schedules.db');
+      return await openDatabase(
+        path,
+        version: 1,
+        onCreate: _onCreate,
+      );
+    } catch (e) {
+      print('Error initializing database: $e');
+      rethrow; // Rethrow the error to be caught by the caller
+    }
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    await db.execute('''
-      CREATE TABLE schedules (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        scheduleName TEXT,
-        day INTEGER,
-        startTime TEXT,
-        endTime TEXT,
-        note TEXT,
-      )
-    ''');
+    try {
+      await db.execute('''
+        CREATE TABLE schedules (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          scheduleName TEXT,
+          day INTEGER,
+          startTime TEXT,
+          endTime TEXT,
+          note TEXT
+        )
+      ''');
+    } catch (e) {
+      print('Error creating table: $e');
+      rethrow; // Rethrow the error to be caught by the caller
+    }
   }
 
   Future<void> insertSchedule(Schedule schedule) async {
-    final db = await database;
-    await db.insert('schedules', schedule.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    try {
+      final db = await database;
+      await db.insert(
+        'schedules',
+        schedule.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    } catch (e) {
+      print('Error inserting schedule: $e');
+      rethrow; // Rethrow the error to be caught by the caller
+    }
   }
 
   Future<void> updateSchedule(Schedule schedule) async {
-    final db = await database;
-    await db.update(
-      'schedules',
-      schedule.toMap(),
-      where: 'id = ?',
-      whereArgs: [schedule.id],
-    );
+    try {
+      final db = await database;
+      await db.update(
+        'schedules',
+        schedule.toMap(),
+        where: 'id = ?',
+        whereArgs: [schedule.id],
+      );
+    } catch (e) {
+      print('Error updating schedule: $e');
+      rethrow; // Rethrow the error to be caught by the caller
+    }
   }
 
   Future<void> deleteSchedule(String id) async {
-    final db = await database;
-    await db.delete(
-      'schedules',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+    try {
+      final db = await database;
+      await db.delete(
+        'schedules',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+    } catch (e) {
+      print('Error deleting schedule: $e');
+      rethrow; // Rethrow the error to be caught by the caller
+    }
   }
 
   Future<List<Schedule>> getAllSchedule() async {
-    final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query('schedules');
-    return List.generate(maps.length, (index) => Schedule.fromMap(maps[index]));
+    try {
+      final db = await database;
+      final List<Map<String, dynamic>> maps = await db.query('schedules');
+      return List<Schedule>.from(maps.map((map) => Schedule.fromMap(map)));
+    } catch (e) {
+      print('Error retrieving schedules: $e');
+      rethrow; // Rethrow the error to be caught by the caller
+    }
   }
 }
