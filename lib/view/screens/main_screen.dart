@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../model/repository/schedule_repository.dart';
+import '../../viewModel/schedule_bloc.dart';
 import 'add_schedule_screen.dart';
 import 'home_screen.dart';
 import 'list_day_screen.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final ScheduleRepository repository;
+  const MainScreen({super.key, required this.repository});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -13,7 +16,17 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
-  final List<Widget> _screens = [HomeScreen(), AddScheduleScreen(), ListDayScreen()];
+  late final List<Widget> _screens;
+  // late ScheduleBloc _scheduleBloc;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _screens = [HomeScreen(repository: widget.repository,), const AddScheduleScreen(), const ListDayScreen()];
+    // _scheduleBloc = BlocProvider.of<ScheduleBloc>(context);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

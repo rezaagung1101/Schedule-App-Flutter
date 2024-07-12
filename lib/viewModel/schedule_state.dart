@@ -1,6 +1,10 @@
 import 'package:equatable/equatable.dart';
 import '../model/data/schedule.dart';
-abstract class ScheduleState {}
+abstract class ScheduleState extends Equatable{
+  const ScheduleState();
+  @override
+  List<Object> get props => [];
+}
 
 class ScheduleInitial extends ScheduleState {}
 
@@ -9,40 +13,15 @@ class SchedulesLoading extends ScheduleState {}
 class SchedulesLoaded extends ScheduleState {
   final List<Schedule> schedules;
 
-  SchedulesLoaded(this.schedules);
+  const SchedulesLoaded(this.schedules);
+  @override
+  List<Object> get props => [schedules];
 }
 
 class ScheduleError extends ScheduleState {
   final String error;
 
-  ScheduleError(this.error);
+  const ScheduleError(this.error);
+  @override
+  List<Object> get props => [error];
 }
-
-// abstract class ScheduleState extends Equatable{
-//   const ScheduleState();
-//
-//   @override
-//   List<Object> get props => [];
-// }
-//
-// class ScheduleInitial extends ScheduleState{}
-//
-// class ScheduleLoading extends ScheduleState{}
-//
-// class ScheduleLoaded extends ScheduleState{
-//   final List<Schedule> schedules;
-//
-//   const ScheduleLoaded(this.schedules);
-//
-//   @override
-//   List<Object> get props => [];
-// }
-//
-// class ScheduleError extends ScheduleState{
-//   final String message;
-//
-//   const ScheduleError(this.message);
-//
-//   @override
-//   List<Object> get props => [];
-// }

@@ -1,15 +1,13 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:schedule_app_flutter/view/screens/main_screen.dart';
 import 'package:schedule_app_flutter/view/widgets/title_text.dart';
-
+import '../../model/repository/schedule_repository.dart';
 import '../../utils/constants.dart';
-import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  final ScheduleRepository repository;
+  const SplashScreen({super.key, required this.repository});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -36,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   void _navigateToHome() {
     Navigator.of(context).pushReplacement(PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) =>
-      const MainScreen(),
+      MainScreen(repository: widget.repository),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(1.0, 0.0);
         const end = Offset.zero;
