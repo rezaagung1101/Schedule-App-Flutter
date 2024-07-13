@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:schedule_app_flutter/view/widgets/body_text.dart';
 import 'package:schedule_app_flutter/view/widgets/title_text.dart';
 
@@ -82,6 +83,14 @@ class Helper {
     final hour = int.parse(parts[0]);
     final minute = int.parse(parts[1]);
     return TimeOfDay(hour: hour, minute: minute);
+  }
+
+  static String getCurrentDay() {
+    return DateFormat('EEEE').format(DateTime.now());
+  }
+
+  static String getCurrentTime() {
+    return DateFormat('hh:mm a').format(DateTime.now());
   }
 
 }

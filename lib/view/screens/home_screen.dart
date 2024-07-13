@@ -13,10 +13,15 @@ import '../../utils/helper.dart';
 import '../../viewModel/schedule_bloc.dart';
 import '../../viewModel/schedule_state.dart';
 
-class HomeScreen extends StatelessWidget {
-  final ScheduleRepository repository;
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.repository});
+  final ScheduleRepository repository;
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     Helper helper = Helper();
@@ -28,51 +33,50 @@ class HomeScreen extends StatelessWidget {
           }
           return SafeArea(
               child: Stack(
-            children: <Widget>[
-              Padding(padding: const EdgeInsets.all(12.0), child: _buildMainContent((state is SchedulesLoaded) ? state.schedules : [])),
-              if(state is ScheduleInitial || state is SchedulesLoading)const LoadingScreen()
-            ],
-          ));
+                children: <Widget>[
+                  Padding(padding: const EdgeInsets.all(12.0), child: _buildMainContent((state is SchedulesLoaded) ? state.schedules : [])),
+                  if(state is ScheduleInitial || state is SchedulesLoading)const LoadingScreen()
+                ],
+              ));
         },
       )
-    );
+      );
   }
 
   Widget _buildMainContent(List<Schedule> schedules) {
     return
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(
-              height: 16,
-            ),
-            const HeadingText(text: 'Monday', size: 35, color: Colors.black87),
-            // const SizedBox(height: 16,),
-            const BodyText(text: '00.00am', size: 24, color: Colors.black87),
-            const SizedBox(
-              height: 16,
-            ),
+      Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          const SizedBox(
+            height: 16,
+          ),
+          const HeadingText(text: 'Monday', size: 35, color: Colors.black87), //current day
+          // const SizedBox(height: 16,),
+          const BodyText(text: '00.00am', size: 24, color: Colors.black87), //current time
+          const SizedBox(
+            height: 16,
+          ),
+          const LightText(
+              text: 'Nearest Schedule', size: 16, color: Colors.black87),
+          const SizedBox(
+            height: 16,
+          ),
+          if (schedules.isNotEmpty) ...[
             const LightText(
-                text: 'Nearest Schedule', size: 16, color: Colors.black87),
-            const SizedBox(
-              height: 16,
-            ),
-            if (schedules.isNotEmpty) ...[
-              const LightText(
-                  text: 'Your Schedule Today', size: 16, color: Colors.black87),
-              _buildListContent(schedules),
-            ] else
-              // if(schedules==null || schedules.isEmpty)
-              const Expanded(
-                child: Center(
-                  child: TitleText(
-                      text: "You don't have any schedule today",
-                      size: 18,
-                      color: Colors.black87),
-                ),
-              )
-          ],
-    );
+                text: 'Your Schedule Today', size: 16, color: Colors.black87),
+            _buildListContent(schedules),
+          ] else
+            const Expanded(
+              child: Center(
+                child: TitleText(
+                    text: "You don't have any schedule today",
+                    size: 18,
+                    color: Colors.black87),
+              ),
+            )
+        ],
+      );
   }
 
   Widget _buildListContent(List<Schedule> schedules) {
@@ -96,3 +100,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
