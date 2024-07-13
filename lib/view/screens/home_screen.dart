@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:schedule_app_flutter/model/repository/schedule_repository.dart';
 import 'package:schedule_app_flutter/view/screens/loading_screen.dart';
 import 'package:schedule_app_flutter/view/widgets/body_text.dart';
@@ -22,6 +25,34 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late Timer _timer;
+  String _currentDay = Helper.getCurrentDay();
+  String _currentTime = Helper.getCurrentTime();
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _updateTime();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _updateTime();
+    });
+  }
+
+  void _updateTime() {
+    setState(() {
+      _currentDay = Helper.getCurrentDay();
+      _currentTime = Helper.getCurrentTime();
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Helper helper = Helper();
@@ -51,9 +82,9 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 16,
           ),
-          const HeadingText(text: 'Monday', size: 35, color: Colors.black87), //current day
+          HeadingText(text: _currentDay, size: 35, color: Colors.black87), //current day
           // const SizedBox(height: 16,),
-          const BodyText(text: '00.00am', size: 24, color: Colors.black87), //current time
+          BodyText(text: _currentTime, size: 24, color: Colors.black87), //current time
           const SizedBox(
             height: 16,
           ),
