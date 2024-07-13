@@ -7,10 +7,10 @@ import 'package:schedule_app_flutter/view/widgets/heading_text.dart';
 import 'package:schedule_app_flutter/view/widgets/light_text.dart';
 import 'package:schedule_app_flutter/view/widgets/schedule_card_item.dart';
 import 'package:schedule_app_flutter/view/widgets/title_text.dart';
+
 import '../../model/data/schedule.dart';
 import '../../utils/helper.dart';
 import '../../viewModel/schedule_bloc.dart';
-import '../../viewModel/schedule_event.dart';
 import '../../viewModel/schedule_state.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -20,9 +20,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Helper helper = Helper();
-    return BlocProvider(
-        create: (context) => ScheduleBloc(repository)..add(LoadSchedules()),
-      child: Scaffold(body: BlocBuilder<ScheduleBloc, ScheduleState>(
+    return
+      Scaffold(body: BlocBuilder<ScheduleBloc, ScheduleState>(
         builder: (context, state) {
           if(state is ScheduleError){
             helper.showSnackBar(context, state.error);
@@ -30,21 +29,17 @@ class HomeScreen extends StatelessWidget {
           return SafeArea(
               child: Stack(
             children: <Widget>[
-              Padding(padding: const EdgeInsets.all(12.0), child: (state is SchedulesLoaded) ? _buildMainContent(state.schedules) :_buildMainContent(null)),
+              Padding(padding: const EdgeInsets.all(12.0), child: _buildMainContent((state is SchedulesLoaded) ? state.schedules : [])),
               if(state is ScheduleInitial || state is SchedulesLoading)const LoadingScreen()
             ],
           ));
         },
-      )),
+      )
     );
   }
 
-  Widget _buildMainContent(List<Schedule>? schedules) {
+  Widget _buildMainContent(List<Schedule> schedules) {
     return
-      // SafeArea(
-      // child: Padding(
-      //   padding: const EdgeInsets.all(12.0),
-      //   child:
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -62,11 +57,12 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
-            if (schedules!=null) ...[
+            if (schedules.isNotEmpty) ...[
               const LightText(
                   text: 'Your Schedule Today', size: 16, color: Colors.black87),
               _buildListContent(schedules),
             ] else
+              // if(schedules==null || schedules.isEmpty)
               const Expanded(
                 child: Center(
                   child: TitleText(
@@ -76,8 +72,6 @@ class HomeScreen extends StatelessWidget {
                 ),
               )
           ],
-      //   ),
-      // ),
     );
   }
 

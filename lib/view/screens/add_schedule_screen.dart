@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_app_flutter/view/widgets/body_text.dart';
 import 'package:schedule_app_flutter/view/widgets/button_section.dart';
 import 'package:schedule_app_flutter/view/widgets/button_time_picker.dart';
@@ -7,6 +8,9 @@ import 'package:schedule_app_flutter/view/widgets/button_time_picker.dart';
 import '../../model/data/schedule.dart';
 import '../../utils/constants.dart';
 import '../../utils/helper.dart';
+import '../../viewModel/schedule_bloc.dart';
+import '../../viewModel/schedule_event.dart';
+import '../../viewModel/schedule_state.dart';
 
 class AddScheduleScreen extends StatefulWidget {
   const AddScheduleScreen({super.key});
@@ -25,6 +29,22 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
   TimeOfDay? selectedStartTime;
   TimeOfDay? selectedEndTime;
   Helper helper = Helper();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<ScheduleBloc>().stream.listen((state) {
+      if (state is SchedulesLoaded) {
+        // Schedule added successfully
+        helper.showSnackBar(context, 'Schedule added successfully!');
+        // Navigator.pop(context); // Optionally navigate back
+      } else if (state is ScheduleError) {
+        // Error occurred while adding schedule
+        helper.showSnackBar(context, state.error);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,8 +173,8 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       endTime: endTime,
       note: note.toString(),
     );
-
     //add schedule not yet implemented
+    BlocProvider.of<ScheduleBloc>(context).add(AddSchedule(schedule));
   }
 
   Widget buildDaySpinner() {
