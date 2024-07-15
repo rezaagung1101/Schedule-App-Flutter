@@ -19,4 +19,9 @@ class ScheduleRepository {
   Future<List<Schedule>> getAllSchedules() async {
     return _databaseHelper.getAllSchedule();
   }
+
+  Future<List<int>> getScheduledDays() async {
+    // return _databaseHelper.getAllSchedule();
+    return [0, 1, 2, 3, 4, 5, 6]; //temp
+  }
 }

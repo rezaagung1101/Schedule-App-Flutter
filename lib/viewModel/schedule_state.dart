@@ -18,6 +18,14 @@ class SchedulesLoaded extends ScheduleState {
   List<Object> get props => [schedules];
 }
 
+class ScheduledDaysLoaded extends ScheduleState {
+  final List<int> scheduledDays;
+
+  const ScheduledDaysLoaded(this.scheduledDays);
+  @override
+  List<Object> get props => [scheduledDays];
+}
+
 class ScheduleError extends ScheduleState {
   final String error;
 

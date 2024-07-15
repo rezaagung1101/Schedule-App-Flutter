@@ -9,6 +9,8 @@ abstract class ScheduleEvent extends Equatable{
 
 class LoadSchedules extends ScheduleEvent {}
 
+class LoadScheduledDays extends ScheduleEvent {}
+
 class AddSchedule extends ScheduleEvent {
   final Schedule schedule;
 
