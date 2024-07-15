@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:schedule_app_flutter/model/repository/schedule_repository.dart';
 import 'package:schedule_app_flutter/view/screens/loading_screen.dart';
 import 'package:schedule_app_flutter/view/widgets/body_text.dart';

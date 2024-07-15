@@ -1,16 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_app_flutter/view/screens/detail_day_screen.dart';
 import 'package:schedule_app_flutter/view/widgets/day_card_item.dart';
 
-class ListDayScreen extends StatefulWidget {
-  const ListDayScreen({super.key});
+import '../../model/repository/schedule_repository.dart';
 
-  @override
-  State<ListDayScreen> createState() => _ListDayScreenState();
-}
+class ListDayScreen extends StatelessWidget {
+  const ListDayScreen({super.key, required this.repository});
+  final ScheduleRepository repository;
 
-class _ListDayScreenState extends State<ListDayScreen> {
   @override
   Widget build(BuildContext context) {
-    return DayCardItem(onTap: (){}, day: 1);
+    List<int> scheduledDays = [1, 2, 3, 4, 6];
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Expanded(
+            child: SingleChildScrollView(
+              child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: scheduledDays.length,
+                itemBuilder: (context, index) {
+                  final day = scheduledDays[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2),
+                    child: DayCardItem(
+                        day: day,
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      DetailDayScreen(repository: repository, day: day)));
+                        }),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -40,7 +40,7 @@ class _MainScreenState extends State<MainScreen> {
       ),
       BlocProvider(
         create: (context) => ScheduleBloc(widget.repository),
-        child: const ListDayScreen(),
+        child: ListDayScreen(repository: widget.repository,),
       )
     ];
   }
