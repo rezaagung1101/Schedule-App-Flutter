@@ -103,4 +103,17 @@ class DatabaseHelper {
       rethrow; // Rethrow the error to be caught by the caller
     }
   }
+
+  Future<List<int>> getScheduledDays() async{
+    try{
+      final db = await database;
+      final List<Map<String, dynamic>> result = await db.rawQuery(
+          'SELECT DISTINCT day FROM schedules ORDER BY day ASC'
+      );
+      return List<int>.from(result.map((map) => map['day'] as int));
+    }catch(e){
+      print('Error retrieving scheduled days: $e');
+      rethrow;
+    }
+  }
 }

@@ -16,7 +16,6 @@ class ListDayScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<int> scheduledDays = [1, 2, 3, 4, 6];
     return Scaffold(
       body: BlocProvider(
         create: (context) => ScheduleBloc(repository)..add(LoadScheduledDays()),

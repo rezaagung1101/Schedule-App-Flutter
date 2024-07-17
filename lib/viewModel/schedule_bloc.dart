@@ -24,6 +24,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     }
   }
 
+
   void _onLoadScheduledDays(LoadScheduledDays event, Emitter<ScheduleState> emit) async {
     emit(SchedulesLoading());
     try {
@@ -61,4 +62,6 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       emit(ScheduleError('Failed to delete schedule: $e'));
     }
   }
+
+
 }
