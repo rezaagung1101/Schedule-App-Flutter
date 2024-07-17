@@ -104,14 +104,25 @@ class DatabaseHelper {
     }
   }
 
-  Future<List<int>> getScheduledDays() async{
-    try{
+  Future<List<Schedule>> getAllSchedulesByDay(String day) async {
+    try {
       final db = await database;
-      final List<Map<String, dynamic>> result = await db.rawQuery(
-          'SELECT DISTINCT day FROM schedules ORDER BY day ASC'
-      );
+      final List<Map<String, dynamic>> maps =
+          await db.query('schedules', where: 'day = ?', whereArgs: [day]);
+      return List<Schedule>.from(maps.map((map) => Schedule.fromMap(map)));
+    } catch (e) {
+      print('Error retrieving schedules: $e');
+      rethrow; // Rethrow the error to be caught by the caller
+    }
+  }
+
+  Future<List<int>> getScheduledDays() async {
+    try {
+      final db = await database;
+      final List<Map<String, dynamic>> result = await db
+          .rawQuery('SELECT DISTINCT day FROM schedules ORDER BY day ASC');
       return List<int>.from(result.map((map) => map['day'] as int));
-    }catch(e){
+    } catch (e) {
       print('Error retrieving scheduled days: $e');
       rethrow;
     }

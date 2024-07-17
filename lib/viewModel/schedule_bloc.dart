@@ -8,6 +8,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
 
   ScheduleBloc(this.repository) : super(ScheduleInitial()) {
     on<LoadSchedules>(_onLoadSchedules);
+    on<LoadSchedulesByDay>(_onLoadSchedulesByDay);
     on<LoadScheduledDays>(_onLoadScheduledDays);
     on<AddSchedule>(_onAddSchedule);
     on<UpdateSchedule>(_onUpdateSchedule);
@@ -24,6 +25,16 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     }
   }
 
+
+  void _onLoadSchedulesByDay(LoadSchedulesByDay event, Emitter<ScheduleState> emit) async {
+    emit(SchedulesLoading());
+    try {
+      final schedules = await repository.getAllSchedulesByDay(event.day);
+      emit(SchedulesLoaded(schedules));
+    } catch (e) {
+      emit(ScheduleError('Failed to load schedules: $e'));
+    }
+  }
 
   void _onLoadScheduledDays(LoadScheduledDays event, Emitter<ScheduleState> emit) async {
     emit(SchedulesLoading());

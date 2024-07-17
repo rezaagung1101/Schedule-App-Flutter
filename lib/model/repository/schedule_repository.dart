@@ -20,6 +20,10 @@ class ScheduleRepository {
     return _databaseHelper.getAllSchedule();
   }
 
+  Future<List<Schedule>> getAllSchedulesByDay(String day) async {
+    return _databaseHelper.getAllSchedulesByDay(day);
+  }
+
   Future<List<int>> getScheduledDays() async {
     return _databaseHelper.getScheduledDays();
   }
