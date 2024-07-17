@@ -27,21 +27,16 @@ class _MainScreenState extends State<MainScreen> {
     // TODO: implement initState
     super.initState();
     _screens = [
-      BlocProvider(
-        create: (context) =>
-            ScheduleBloc(widget.repository)..add(LoadSchedules()),
-        child: HomeScreen(
-          repository: widget.repository,
-        ),
+      HomeScreen(
+        repository: widget.repository,
       ),
       BlocProvider(
         create: (context) => ScheduleBloc(widget.repository),
         child: const AddScheduleScreen(),
       ),
-      BlocProvider(
-        create: (context) => ScheduleBloc(widget.repository)..add(LoadSchedules()),
-        child: ListDayScreen(repository: widget.repository,),
-      )
+      ListDayScreen(
+        repository: widget.repository,
+      ),
     ];
   }
 

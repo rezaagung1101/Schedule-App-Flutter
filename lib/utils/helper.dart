@@ -85,6 +85,11 @@ class Helper {
     return TimeOfDay(hour: hour, minute: minute);
   }
 
+  static int getCurrentDayIndex() {
+    int weekday = DateTime.now().weekday;
+    return weekday == 7 ? 0 : weekday;
+  }
+
   static String getCurrentDay() {
     return DateFormat('EEEE').format(DateTime.now());
   }

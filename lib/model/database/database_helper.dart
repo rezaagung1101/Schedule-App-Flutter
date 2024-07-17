@@ -96,7 +96,7 @@ class DatabaseHelper {
   Future<List<Schedule>> getAllSchedule() async {
     try {
       final db = await database;
-      final List<Map<String, dynamic>> maps = await db.query('schedules');
+      final List<Map<String, dynamic>> maps = await db.query('schedules',  orderBy: 'startTime ASC');
       return List<Schedule>.from(maps.map((map) => Schedule.fromMap(map)));
     } catch (e) {
       print('Error retrieving schedules: $e');
@@ -108,7 +108,7 @@ class DatabaseHelper {
     try {
       final db = await database;
       final List<Map<String, dynamic>> maps =
-          await db.query('schedules', where: 'day = ?', whereArgs: [day]);
+          await db.query('schedules', where: 'day = ?', whereArgs: [day], orderBy: 'startTime ASC');
       return List<Schedule>.from(maps.map((map) => Schedule.fromMap(map)));
     } catch (e) {
       print('Error retrieving schedules: $e');

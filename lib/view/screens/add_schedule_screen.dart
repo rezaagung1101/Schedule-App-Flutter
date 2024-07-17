@@ -173,7 +173,6 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       endTime: endTime,
       note: note.toString(),
     );
-    //add schedule not yet implemented
     BlocProvider.of<ScheduleBloc>(context).add(AddSchedule(schedule));
   }
 

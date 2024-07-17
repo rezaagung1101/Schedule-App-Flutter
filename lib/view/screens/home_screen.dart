@@ -9,6 +9,7 @@ import 'package:schedule_app_flutter/view/widgets/heading_text.dart';
 import 'package:schedule_app_flutter/view/widgets/light_text.dart';
 import 'package:schedule_app_flutter/view/widgets/schedule_card_item.dart';
 import 'package:schedule_app_flutter/view/widgets/title_text.dart';
+import 'package:schedule_app_flutter/viewModel/schedule_event.dart';
 
 import '../../model/data/schedule.dart';
 import '../../utils/helper.dart';
@@ -27,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late Timer _timer;
   String _currentDay = Helper.getCurrentDay();
   String _currentTime = Helper.getCurrentTime();
+  int _currentDayIndex = Helper.getCurrentDayIndex();
 
 
   @override
@@ -43,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _currentDay = Helper.getCurrentDay();
       _currentTime = Helper.getCurrentTime();
+      _currentDayIndex = Helper.getCurrentDayIndex();
     });
   }
 
@@ -56,20 +59,24 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     Helper helper = Helper();
     return
-      Scaffold(body: BlocBuilder<ScheduleBloc, ScheduleState>(
-        builder: (context, state) {
-          if(state is ScheduleError){
-            helper.showSnackBar(context, state.error);
-          }
-          return SafeArea(
-              child: Stack(
-                children: <Widget>[
-                  Padding(padding: const EdgeInsets.all(12.0), child: _buildMainContent((state is SchedulesLoaded) ? state.schedules : [])),
-                  if(state is ScheduleInitial || state is SchedulesLoading)const LoadingScreen()
-                ],
-              ));
-        },
-      )
+      Scaffold(
+          body: BlocProvider(
+            create: (context) => ScheduleBloc(widget.repository)..add(LoadSchedulesByDay(_currentDayIndex.toString())),
+            child: BlocBuilder<ScheduleBloc, ScheduleState>(
+                    builder: (context, state) {
+            if(state is ScheduleError){
+              helper.showSnackBar(context, state.error);
+            }
+            return SafeArea(
+                child: Stack(
+                  children: <Widget>[
+                    Padding(padding: const EdgeInsets.all(12.0), child: _buildMainContent((state is SchedulesLoaded) ? state.schedules : [])),
+                    if(state is ScheduleInitial || state is SchedulesLoading)const LoadingScreen()
+                  ],
+                ));
+                    },
+                  ),
+          )
       );
   }
 
@@ -94,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           if (schedules.isNotEmpty) ...[
             const LightText(
-                text: 'Your Schedule Today', size: 16, color: Colors.black87),
+                text: 'Your Schedules Today', size: 16, color: Colors.black87),
             _buildListContent(schedules),
           ] else
             const Expanded(
