@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_app_flutter/model/repository/schedule_repository.dart';
+import 'package:schedule_app_flutter/view/screens/detail_schedule_screen.dart';
 import 'package:schedule_app_flutter/view/screens/loading_screen.dart';
 import 'package:schedule_app_flutter/view/widgets/body_text.dart';
 import 'package:schedule_app_flutter/view/widgets/heading_text.dart';
@@ -128,7 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2),
                 child: ScheduleCardItem(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailScheduleScreen(schedule: schedule)));
+                    },
                     scheduleName: schedule.scheduleName,
                     startTime: schedule.startTime),
               );

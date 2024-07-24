@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../widgets/body_text.dart';
 
 
@@ -8,7 +7,8 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return
+      Container(
       color: Colors.black.withOpacity(0.6), // Semi-transparent overlay
       child: Center(
         child: Container(

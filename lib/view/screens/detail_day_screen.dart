@@ -11,6 +11,7 @@ import '../../viewModel/schedule_state.dart';
 import '../widgets/heading_text.dart';
 import '../widgets/light_text.dart';
 import '../widgets/schedule_card_item.dart';
+import 'detail_schedule_screen.dart';
 
 class DetailDayScreen extends StatelessWidget {
   DetailDayScreen({super.key, required this.day, required this.repository});
@@ -69,7 +70,9 @@ class DetailDayScreen extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2),
                 child: ScheduleCardItem(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailScheduleScreen(schedule: schedule)));
+                    },
                     scheduleName: schedule.scheduleName,
                     startTime: schedule.startTime),
               );
