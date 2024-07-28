@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:schedule_app_flutter/model/data/schedule.dart';
+import 'package:schedule_app_flutter/view/screens/update_schedule_screen.dart';
 import 'package:schedule_app_flutter/view/widgets/body_text.dart';
 import 'package:schedule_app_flutter/view/widgets/title_text.dart';
 
@@ -14,7 +15,7 @@ class DetailScheduleScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.blue.shade100,
         title: const TitleText(
-          text: "Task Detail", size: 20, color: Colors.black87,),
+          text: "Schedule Detail", size: 20, color: Colors.black87,),
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16, 24, 8, 16),
@@ -27,6 +28,13 @@ class DetailScheduleScreen extends StatelessWidget {
             _detailSection(Icons.notes_rounded, "Note", schedule.note),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await Navigator.push(context,
+              MaterialPageRoute(builder: (context) => UpdateScheduleScreen(schedule: schedule,)));
+        },
+        child: const Icon(Icons.edit),
       ),
     );
   }
