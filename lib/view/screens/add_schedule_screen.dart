@@ -11,6 +11,7 @@ import '../../utils/helper.dart';
 import '../../viewModel/schedule_bloc.dart';
 import '../../viewModel/schedule_event.dart';
 import '../../viewModel/schedule_state.dart';
+import '../widgets/spinner_day.dart';
 
 class AddScheduleScreen extends StatefulWidget {
   const AddScheduleScreen({super.key});
@@ -49,8 +50,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: SingleChildScrollView(
+      body: SafeArea(
         child: Padding(
             padding: const EdgeInsets.fromLTRB(12, 24, 12, 12),
             child: Form(
@@ -59,9 +59,15 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   const BodyText(
-                      text: 'Add New Schedule', size: 22, color: Colors.black87),
+                      text: 'Add New Schedule',
+                      size: 22,
+                      color: Colors.black87),
                   const SizedBox(height: 16.0),
-                  buildDaySpinner(),
+                  SpinnerDay(selectedDayIndex: _selectedDayIndex, onDayChanged: (index){
+                    setState(() {
+                      _selectedDayIndex = index;
+                    });
+                  }),
                   const SizedBox(height: 16.0),
                   TextFormField(
                     controller: _scheduleNameController,
@@ -109,12 +115,15 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                     ],
                   ),
                   const SizedBox(height: 16.0),
-                  ButtonSection(onTap: _confirmAddSchedule, text: 'Save', mainColor: Colors.lightBlue)
+                  ButtonSection(
+                      onTap: _confirmAddSchedule,
+                      text: 'Save',
+                      mainColor: Colors.lightBlue)
                 ],
               ),
             )),
       ),
-    ));
+    );
   }
 
   Future<TimeOfDay?> showCustomTimePicker(BuildContext context) async {
@@ -144,24 +153,24 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
     }
   }
 
-  void _confirmAddSchedule() async{
+  void _confirmAddSchedule() async {
     if (_formKey.currentState!.validate()) {
       if (selectedStartTime != null && selectedEndTime != null) {
-          bool? result = await helper.showConfirmationDialog(
-            context,
-            'Confirm Add Task',
-            'Are you sure you want to add this task?',
-          );
-          if (result == true) {
-            _addSchedule();
-          }
+        bool? result = await helper.showConfirmationDialog(
+          context,
+          'Confirm Add Schedule',
+          'Are you sure you want to add this Schedule?',
+        );
+        if (result == true) {
+          _addSchedule();
+        }
       } else {
         helper.showSnackBar(context, 'Start & End Time Required!');
       }
     }
   }
 
-  void _addSchedule() async{
+  void _addSchedule() async {
     final scheduleName = _scheduleNameController.text;
     final note = _noteController.text;
     final startTime = helper.timeOfDayToString(selectedStartTime!);
@@ -176,77 +185,4 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
     BlocProvider.of<ScheduleBloc>(context).add(AddSchedule(schedule));
   }
 
-  Widget buildDaySpinner() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            width: double.infinity,
-            height: 70,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50.0),
-              color: Colors.white,
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(50.0),
-              child: Stack(
-                children: [
-                  ListWheelScrollView.useDelegate(
-                    controller: _extentScrollController,
-                    itemExtent: 35,
-                    onSelectedItemChanged: (index) {
-                      setState(() {
-                        _selectedDayIndex = index;
-                      });
-                    },
-                    physics: const FixedExtentScrollPhysics(),
-                    childDelegate: ListWheelChildBuilderDelegate(
-                      builder: (context, index) {
-                        return Container(
-                          padding: EdgeInsets.only(left: 32),
-                          alignment: Alignment.centerLeft,
-                          child: BodyText(
-                            text: Constants.days[index],
-                            size: 18,
-                            color: Colors.black87,
-                          ),
-                        );
-                      },
-                      childCount: Constants.days.length,
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: IgnorePointer(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.white.withOpacity(0.95),
-                              Colors.white.withOpacity(0.0),
-                              Colors.white.withOpacity(0.95),
-                            ],
-                            stops: const [0.0, 0.5, 1.0],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const Positioned(
-            right: 5,
-            child: Icon(Icons.swipe_vertical_outlined, color: Colors.grey),
-          ),
-        ],
-      ),
-    );
-  }
 }
-
