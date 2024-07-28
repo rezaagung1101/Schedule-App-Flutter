@@ -35,7 +35,7 @@ class DetailScheduleScreen extends StatelessWidget {
   Widget _detailSection(IconData icon, String title, String description) {
     return Row(
       children: <Widget>[
-        Icon(icon, size: 40, color: Colors.grey,),
+        Icon(icon, size: 40, color: Colors.black54,),
         const SizedBox(width: 24,),
         Expanded(child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

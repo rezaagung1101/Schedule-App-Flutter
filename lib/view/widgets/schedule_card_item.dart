@@ -18,7 +18,7 @@ class ScheduleCardItem extends StatelessWidget {
     return
         Card(
           elevation: 2,
-          color: Colors.blue[40],
+          color: Colors.blue[50],
           shape: RoundedRectangleBorder(
               side: const BorderSide(color: Colors.white, width: 2),
               borderRadius: BorderRadius.circular(10)),

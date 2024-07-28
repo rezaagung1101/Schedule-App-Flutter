@@ -109,7 +109,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                     ],
                   ),
                   const SizedBox(height: 16.0),
-                  ButtonSection(onTap: _confirmAddSchedule, text: 'Save', mainColor: Colors.blue)
+                  ButtonSection(onTap: _confirmAddSchedule, text: 'Save', mainColor: Colors.lightBlue)
                 ],
               ),
             )),
