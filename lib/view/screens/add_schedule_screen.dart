@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_app_flutter/view/widgets/body_text.dart';
@@ -6,7 +5,6 @@ import 'package:schedule_app_flutter/view/widgets/button_section.dart';
 import 'package:schedule_app_flutter/view/widgets/button_time_picker.dart';
 
 import '../../model/data/schedule.dart';
-import '../../utils/constants.dart';
 import '../../utils/helper.dart';
 import '../../viewModel/schedule_bloc.dart';
 import '../../viewModel/schedule_event.dart';
@@ -24,8 +22,6 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _scheduleNameController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
-  final FixedExtentScrollController _extentScrollController =
-      FixedExtentScrollController();
   int _selectedDayIndex = 0;
   TimeOfDay? selectedStartTime;
   TimeOfDay? selectedEndTime;

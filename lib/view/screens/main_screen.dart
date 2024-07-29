@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:schedule_app_flutter/viewModel/schedule_event.dart';
+
 import '../../model/repository/schedule_repository.dart';
 import '../../viewModel/schedule_bloc.dart';
 import 'add_schedule_screen.dart';
